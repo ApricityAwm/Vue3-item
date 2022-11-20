@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
+// 自动导入vue vue-router api的插件
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
@@ -12,12 +13,22 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        // 自动导入 Element Plus 组件
+        ElementPlusResolver(),
+      ],
       dts: 'types/auto-imports.d.ts',
+      // 自动导入vue vue-router
+      imports: ['vue', 'vue-router'],
+      dirs: ['./src/layouts/components'],
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        // 自动注册 Element Plus 组件
+        ElementPlusResolver(),
+      ],
       dts: 'types/components.d.ts',
+      dirs: ['./src/layouts/components', './src/components'],
     }),
   ],
   resolve: {

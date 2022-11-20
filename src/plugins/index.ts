@@ -1,6 +1,6 @@
 import type { App } from 'vue';
 import { setupPinia } from './pinia';
-import { setupElementIcon } from './element-icons';
+import { setupElementIcon } from './element';
 import './tailwindcss';
 
 /** 加载插件 */

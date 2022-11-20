@@ -1,0 +1,17 @@
+@import './base.css';
+
+body {
+  width: 100vw;
+  height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans,
+    sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+#app {
+  width: 100vw;
+  height: 100vh;
+}
+.el-card__header {
+  border-bottom: 0 !important;
+}

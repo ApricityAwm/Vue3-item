@@ -1,7 +1,9 @@
+<script lang="ts" setup>
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
+</script>
+
 <template>
-  <div>
-    <el-icon :size="20">
-      <Edit />
-    </el-icon>
-  </div>
+  <el-config-provider :locale="zhCn">
+    <RouterView />
+  </el-config-provider>
 </template>

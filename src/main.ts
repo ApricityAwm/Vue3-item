@@ -1,15 +1,19 @@
 import { createApp } from 'vue';
 
 import App from './App.vue';
-
 import { setupPlugins } from './plugins';
-import router from './router';
+import { setupRouter } from './router';
+import { setupDirective } from './directive'; // 自定义组件
 
-import './assets/main.css';
+import './assets/css/main.css';
+// 暗黑模式
+import 'element-plus/theme-chalk/dark/css-vars.css';
 
-const app = createApp(App);
-
-setupPlugins(app);
-app.use(router);
-
-app.mount('#app');
+const bootstrap = async () => {
+  const app = createApp(App);
+  setupDirective(app);
+  setupPlugins(app);
+  setupRouter(app);
+  app.mount('#app');
+};
+bootstrap();

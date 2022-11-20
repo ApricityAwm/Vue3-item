@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["types/**/*", "src/**/*", "src/**/*.vue"],
+  "include": ["types/**/*", "src/**/*", "src/**/*.vue,","src/hooks/*"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

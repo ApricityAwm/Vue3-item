@@ -106,7 +106,8 @@ export class Axios {
     return this.request<T>({ ...config, method: 'GET' });
   }
   /** 图片上传 */
-  upload(config?: AxiosRequestConfig) {
+  upload<T = any>(config?: AxiosRequestConfig) {
+    // 转换为表单数据
     const formData = new FormData();
     for (const key in config?.data) {
       formData.set(key, config?.data[key]);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { genFileId } from 'element-plus';
-import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus';
+import type { UploadUserFile } from 'element-plus';
+import { uploadImage } from '@/api';
 
 const props = withDefaults(
   defineProps<{
@@ -26,22 +26,30 @@ const model = ref({ ...props.modelValue });
 /** 监听model的值并重新赋值 */
 watchEffect(() => emit('update:modelValue', { ...model.value }));
 
-const fileList = ref([]);
+// 环境变量中定义的文件上传地址  从中结构
+const { VITE_UPLOAD_IMAGE_NAME } = import.meta.env;
 
-/** 上传文件组件的实例 */
-const upload = ref<UploadInstance>();
-/** 替换上一次 */
-const handleExceed: UploadProps['onExceed'] = (files) => {
-  fileList.value = [];
-  console.log(files);
+/** 文件列表      回显数据 即回显图片*/
+const fileList = ref<UploadUserFile[]>(
+  // 三元运算判断url是否为空 有则回显数据即图片路径 否则不显示
+  props.modelValue[VITE_UPLOAD_IMAGE_NAME as string]
+    ? [{ name: Date.now() + '', url: props.modelValue[VITE_UPLOAD_IMAGE_NAME as string] }]
+    : []
+);
 
-  const file = files[0] as UploadRawFile;
-  file.uid = genFileId();
-  upload.value!.handleStart(file);
+const handleUpLoad = async (file: any, field: string) => {
+  // 将获取到的文件数据uploadFile.raw  赋值给key [field]
+  const data = await uploadImage({ [field]: file });
+  // 将获取到的data赋给文件列表
+  fileList.value = [data];
+  // 拿到最终数据
+  model.value = { ...model.value, [field]: data.url };
+  // uploadImage({[]})
 };
 </script>
 
 <template>
+  {{ model }}
   <el-form :label-position="labelPosition" :model="modelValue" :label-width="labelWidth">
     <el-row :gutter="30">
       <template v-for="item in formItem" :key="item.field">
@@ -81,11 +89,12 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
             <template v-if="item.type === 'upload'">
               <el-upload
                 class="w-full"
-                action="http://localhost:3000/upload/image"
                 list-type="picture-card"
-                name="image"
+                ref="uploadRef"
                 :limit="1"
-                :on-exceed="handleExceed"
+                :auto-upload="false"
+                :on-change="( file: any) => handleUpLoad(file.raw!, item.field)"
+                :on-exceed="( [file]: any) => handleUpLoad(file, item.field)"
                 v-model:file-list="fileList"
               >
                 <el-icon><Plus /></el-icon>
